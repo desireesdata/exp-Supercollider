@@ -1,6 +1,8 @@
 # Supercollider par l'exemple : un mémo
 
-> A ajouter : -> Un mot sur Supercollider.
+> A ajouter : 
+> 
+> -> Un mot sur Supercollider.
 > -> Parler de sa spécificité (le CTRL + ENTREE) et le fait que le programme ne se déroule pas de bas en haut comme un script python.
 
 ## Comment ça marche (grossomodo)
@@ -79,6 +81,14 @@ mot.postln;
 > 
 > - Varialbes d'une lettre = variables globales prédéfinies.
 
+### Opérateur de duplication
+
+```smalltalk
+hey !3 
+```
+
+Répète trois fois "hey". Utile pour dupliquer un signal mono => stéréo (on verra ultérieurement)
+
 ### Symboles
 
 Sorte d'étiquette pour nommer des choses (ex: des fonctions) :
@@ -86,8 +96,6 @@ Sorte d'étiquette pour nommer des choses (ex: des fonctions) :
 ```
 \code
 ```
-
-
 
 ### Blocks
 
