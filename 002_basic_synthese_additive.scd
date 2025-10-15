@@ -62,3 +62,26 @@ a.free;
 b.free;
 c.free;
 )
+
+
+/********************************************/
+/********************************************/
+/********************************************/
+//3 Synthese additive, mais le synthétiseur incorpore "tout en un" ses propres harmoniques, sans être dupliqué. On mélange directement les signaux.
+
+// Array.fill(n, { |i| ... }) crée un tableau de n éléments en évaluant la fonction pour chaque index i.
+// Mix.fill = Array.fill + sommation automatique du tableau.
+
+(
+SynthDef(\additive_mieux, {|fondamentale=100, amp=0.4|
+	var sig;
+	sig = Mix.fill(3, {|i|
+		var freq = fondamentale * (i + 1);
+		var a = amp / ( i + 1);
+		SinOsc.ar(freq, 0, a);
+	});
+	Out.ar(0, sig!2)
+}).add;
+)
+
+d = Synth(\additive_mieux, [\fondamentale, 100])
