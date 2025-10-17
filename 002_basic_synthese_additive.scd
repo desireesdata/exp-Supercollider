@@ -30,7 +30,6 @@ b.free;
 c.free;
 )
 
-
 /********************************************/
 /********************************************/
 /********************************************/
@@ -63,19 +62,50 @@ b.free;
 c.free;
 )
 
-
 /********************************************/
 /********************************************/
 /********************************************/
 //3 Synthese additive, mais le synthétiseur incorpore "tout en un" ses propres harmoniques, sans être dupliqué. On mélange directement les signaux.
 
+//a. Avec de simples additions :
+
+(
+SynthDef(\plusplus, { |freq=100|
+	var sig;
+	sig = SinOsc.ar(freq, 0, 0.4) + SinOsc.ar(freq * 2, 0, 0.2) + SinOsc.ar(freq * 3, 0, 0.1);
+	Out.ar(0, sig!2);
+}).add;
+)
+
+g = Synth(\plusplus, [\freq, 100]);
+
+
+// b. On peut aussi utiliser Mix pour additionner les signaux. Inutile ici, mais ça peut servir si on veut un nombre d'harmoniques dynamique plus tard:
+(
+SynthDef(\additive_mix, {|fondamentale = 100|
+	var sig;
+	sig = Mix([SinOsc.ar(fondamentale, 0, 0.4), SinOsc.ar(fondamentale * 2, 0, 0.2), SinOsc.ar(fondamentale * 4, 0, 0.1)]);
+	Out.ar(0, sig!2);
+}).add;)
+
+d = Synth(\additive_mix)
+
+/********************************************/
+/********************************************/
+/********************************************/
+//4 Synthese additive, mais le synthétiseur incorpore "tout en un" ses propres harmoniques, sans être dupliqué. On mélange directement les signaux avec Mix + une boucle
+
 // Array.fill(n, { |i| ... }) crée un tableau de n éléments en évaluant la fonction pour chaque index i.
 // Mix.fill = Array.fill + sommation automatique du tableau.
 
+// Mix([SinOsc.ar(200), SinOsc.ar(400), SinOsc.ar(600)])
+// SinOsc.ar(200) + SinOsc.ar(400) + SinOsc.ar(600)
+
 (
+~nbr = 4;
 SynthDef(\additive_mieux, {|fondamentale=100, amp=0.4|
 	var sig;
-	sig = Mix.fill(3, {|i|
+	sig = Mix.fill(~nbr, {|i|
 		var freq = fondamentale * (i + 1);
 		var a = amp / ( i + 1);
 		SinOsc.ar(freq, 0, a);
@@ -84,4 +114,4 @@ SynthDef(\additive_mieux, {|fondamentale=100, amp=0.4|
 }).add;
 )
 
-d = Synth(\additive_mieux, [\fondamentale, 100])
+e = Synth(\additive_mieux, [\fondamentale, 100, \amp, 0.3])
